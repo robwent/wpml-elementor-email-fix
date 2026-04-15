@@ -61,6 +61,28 @@ wp search-replace '[tous-les-champs]' '[all-fields]' wp_postmeta --include-colum
 
 Remove `--dry-run` once you've confirmed the matches are correct. Always back up your database first.
 
+### Option 3: Direct SQL via phpMyAdmin
+
+First, check which pages are affected:
+
+```sql
+SELECT post_id, meta_value
+FROM wp_postmeta
+WHERE meta_key = '_elementor_data'
+AND meta_value LIKE '%tous-les-champs%';
+```
+
+Then fix them:
+
+```sql
+UPDATE wp_postmeta
+SET meta_value = REPLACE(meta_value, '[tous-les-champs]', '[all-fields]')
+WHERE meta_key = '_elementor_data'
+AND meta_value LIKE '%tous-les-champs%';
+```
+
+Adjust the translated shortcode for your language. Always back up your database first.
+
 ## License
 
 GPL-2.0-or-later
